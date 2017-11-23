@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    volumes:
+      - '~/vol/database:/var/lib/mysql'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456 
+    ports:
+      - "3306:3306"
+    
+  web:
+    depends_on:
+      - php
+    build: ./nginx
+    volumes:
+      - '~/vol/web:/opt/web'
+    restart: always
+    ports:
+      - "8080:80"
+
+  php:
+    build: ./php
+    volumes:
+      - '~/vol/web:/opt/web'
+    restart: always
+    ports:
+      - "9000:9000"
